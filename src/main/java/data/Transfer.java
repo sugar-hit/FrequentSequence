@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Transfer {
+
+    private String hex2Bin (int hex) {
+        return Integer.toHexString(hex);
+    }
+
     private String hex2Bin (String hexStr) {
         return Integer.toBinaryString(Integer.parseInt(hexStr.trim(), 16));
     }

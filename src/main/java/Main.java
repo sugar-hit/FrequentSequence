@@ -61,5 +61,10 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Written Error Occurs when outputting.");
         }
+
+
+        System.out.println(transfer.longBin2Hex(transfer.longHex2Bin("ABABABABABABABABABAB")).toUpperCase());
+        System.out.println(transfer.longHex2Bin(transfer.longBin2Hex("10101011101010111010101110101011101010111010101110101011101010111010101110101011")));
+
     }
 }
