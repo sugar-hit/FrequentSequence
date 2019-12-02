@@ -53,13 +53,13 @@ public class Process {
         if (op == null)
             return;
         int length = op.length();
-        if (length < 5)
+        if (length < 10)
             return;
         if (opList == null)
             opList = new ArrayList<>();
         byte[] stringArr = op.getBytes();
         StringBuffer tmp = new StringBuffer();
-        for (int i = 5; i < 21 ; i++) {
+        for (int i = 10; i < 41 ; i++) {
             if (length - i < 0)
                 break;
             for (int j = 0; j < length - i + 1; j++) {
@@ -113,7 +113,7 @@ public class Process {
         if (op == null)
             return;
         int length = op.length();
-        if (length < 5)
+        if (length < 10)
             return;
         if (opListMap == null)
             opListMap = new HashMap<>();
@@ -121,7 +121,7 @@ public class Process {
         Map<String, Long> opSingleFileMap = new HashMap<>();
         byte[] stringArr = op.getBytes();
         StringBuffer tmp = new StringBuffer();
-        for (int i = 5; i < 21; i++ ) {
+        for (int i = 10; i < 41; i++ ) {
             if (length - i < 0)
                 break;
             for (int j = 0; j < length - i + 1 ; j++) {

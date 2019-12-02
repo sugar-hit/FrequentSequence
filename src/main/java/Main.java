@@ -47,14 +47,14 @@ public class Main {
 //        StringBuffer bufferHex = new StringBuffer();
 //        StringBuffer bufferHexBin = new StringBuffer();
         for (int i = 0; i < length; i++) {
-            buffer.append(transfer.outputHex(ops.get(i).toUpperCase()))
-                    .append("/")
-                    .append(opsCount.get(i))
-                    .append('\n');
-//            buffer.append(ops.get(i).toUpperCase())
+//            buffer.append(transfer.outputHex(ops.get(i).toUpperCase()))
 //                    .append("/")
 //                    .append(opsCount.get(i))
 //                    .append('\n');
+            buffer.append(ops.get(i).toUpperCase())
+                    .append("/")
+                    .append(opsCount.get(i))
+                    .append('\n');
 ////            bufferHex.append(transfer.bin2hex(ops.get(i)).toUpperCase())
 //                    .append("/")
 //                    .append(opsCount.get(i))
