@@ -244,11 +244,11 @@ public class Process {
                     opListMap.put(k, 0);
             }
         }
-        System.out.print("\n");
-        System.out.print("反例文件分析完成。");
+        System.out.println("反例文件分析完成 [OK]");
     }
 
-    public void fastRemoveStopOpreation (ArrayList<String> stopOpFiles, LinkedHashMap<String, Integer> opsMap) throws IOException{
+    public void fastRemoveStopOpreation (ArrayList<String> stopOpFiles, LinkedHashMap<String, Integer> opsMap)
+            throws IOException{
         if (stopOpFiles == null)
             return;
         if (stopOpFiles.size() == 0)
@@ -268,7 +268,6 @@ public class Process {
          *  在这里加入Console端进度条，可以在IDE控制台查看，
          *  也可以在JVM运行时打印至terminal。
          */
-        System.out.print("反例分析进度：");
         int fileNumber = stopOpFiles.size();
         int fileCounter = 0;
         double jobPercent = 0.0;
@@ -317,9 +316,9 @@ public class Process {
             opsMap2.put(opArray.get(i), opCountsArray.get(i));
         }
         opsMap = opsMap2;
-        for (int i = 0; i < 42; i++) {
+        for (int i = 0; i < 40; i++) {
             System.out.print("\b");
         }
-        System.out.println("反例文件分析完成");
+        System.out.println("反例文件分析完成 [OK]");
     }
 }

@@ -41,6 +41,10 @@ public class FileOperation {
         }
     }
 
+    public String getOutPutFilePath() {
+        return configFileReader("output_filepath");
+    }
+
     private String configFileReader (String key) {
         if (key == null)
             return null;

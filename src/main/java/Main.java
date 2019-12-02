@@ -9,7 +9,7 @@ public class Main {
     //TEST
     public static void main(String[] args) {
         System.out.println("----------------------------------------------------");
-        System.out.println("高频次操作码检测  / (C) 2019 Harbin Institute of Technology, All right reserved.");
+        System.out.println("高频次操作码检测  \n (C) 2019 Harbin Institute of Technology, All right reserved.");
         System.out.println("----------------------------------------------------");
         FileOperation fp = new FileOperation();
         // 获取全部正反例文件（文件夹下所有文件）名
@@ -31,8 +31,7 @@ public class Main {
         for (int i = 0; i < 39; i++) {
             System.out.print("\b");
         }
-        System.out.println("正例文件读取完成");
-        System.out.println("----------------------------------------------------");
+        System.out.println("正例文件读取完成 [OK]");
         // 在高频词中 过滤停用词
 //        for (String bannedOps: negativeCtlArray) {
 //            hotDict.put(bannedOps, 0L);
@@ -44,7 +43,7 @@ public class Main {
 //        }
 
         // 分析高频操作序列，排序。
-        System.out.print("正在分析正例文件...（如果正例文件较多且文件较大将花费较长时间，请耐心等待）");
+        System.out.print("正在分析正例文件（如果反例文件较多且文件较大将花费较长时间，请耐心等待）");
         Sort sort = new Sort();
         // 排序（O(n^2) ^^ = 100）
 //        ArrayList<String> ops = new ArrayList<>();
@@ -54,17 +53,15 @@ public class Main {
         for (int i = 0; i < 39; i++) {
             System.out.print("\b");
         }
-        System.out.println("正例文件分析完成");
-        System.out.println("----------------------------------------------------");
+        System.out.println("正例文件分析完成 [OK]");
+        System.out.println("反例文件读取完成 [OK]");
         // 在高频词中 过滤停用词
-        System.out.print("正在读取反例文件...（如果反例文件较多且文件较大将花费较长时间，请耐心等待）");
+        System.out.print("正在分析反例文件：");
         try {
             dataProcess.fastRemoveStopOpreation(negativeFiles, hotDictSorted);
         } catch (IOException e) {
             System.out.println("Something wrong occurs, due complexity much intersected negative operations removed in hot keys.");
-        }
-        System.out.print("\n");
-        System.out.println("----------------------------------------------------");
+        };
         // 结果输出至文件
         System.out.print("正在向文件输出...");
         Transfer transfer = new Transfer();
@@ -113,8 +110,7 @@ public class Main {
         for (i = 0; i < 10; i++) {
             System.out.print("\b");
         }
-        System.out.println("成功检测并输出。请查阅配置文件处已设定好的结果文件。");
-        System.out.println("----------------------------------------------------");
+        System.out.println("检测完成，结果已输出至："+ fp.getOutPutFilePath() +"\n[FINISH]");
 //        for (String s : ops) {
 //            System.out.format("%s", s);
 //        }
