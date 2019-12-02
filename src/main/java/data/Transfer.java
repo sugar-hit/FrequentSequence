@@ -61,4 +61,26 @@ public class Transfer {
         }
         return stringBuffer.reverse().toString();
     }
+
+    public String outputHex (String hex) {
+        if (hex == null)
+            return null;
+        if (hex.length()==0)
+            return null;
+        if (hex.length()==1)
+            return "\\x0" + hex;
+        List<String> resultList = new ArrayList<>();
+        StringBuffer buffer = new StringBuffer();
+        int i = hex.length();
+        for (; i >= 2; i = i - 2) {
+            resultList.add("\\x" + hex.substring(i - 2, i));
+        }
+        if (i == 1)
+            resultList.add(outputHex(hex.substring(0,1)));
+        i = resultList.size() - 1;
+        for (; i >= 0 ; i-- ) {
+            buffer.append(resultList.get(i));
+        }
+        return buffer.toString();
+    }
 }
