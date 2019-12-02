@@ -43,28 +43,38 @@ public class Main {
 
         // 结果输出到文件
         Transfer transfer = new Transfer();
-        StringBuffer bufferHex = new StringBuffer();
-        StringBuffer bufferHexBin = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
+//        StringBuffer bufferHex = new StringBuffer();
+//        StringBuffer bufferHexBin = new StringBuffer();
         for (int i = 0; i < length; i++) {
-            bufferHex.append(transfer.bin2hex(ops.get(i)).toUpperCase())
+            buffer.append(transfer.outputHex(ops.get(i).toUpperCase()))
                     .append("/")
                     .append(opsCount.get(i))
-                    .append("\n");
-            bufferHexBin.append(ops.get(i))
-                    .append("/")
-                    .append(opsCount.get(i))
-                    .append("\n");
+                    .append('\n');
+//            buffer.append(ops.get(i).toUpperCase())
+//                    .append("/")
+//                    .append(opsCount.get(i))
+//                    .append('\n');
+////            bufferHex.append(transfer.bin2hex(ops.get(i)).toUpperCase())
+//                    .append("/")
+//                    .append(opsCount.get(i))
+//                    .append("\n");
+//            bufferHexBin.append(ops.get(i))
+//                    .append("/")
+//                    .append(opsCount.get(i))
+//                    .append("\n");
         }
         try {
-            fp.outputFileAppendHex(bufferHex.toString());
-            fp.outputFileAppendHexBin(bufferHexBin.toString());
+            fp.outputFileAppend(buffer.toString());
+//            fp.outputFileAppendHex(bufferHex.toString());
+//            fp.outputFileAppendHexBin(bufferHexBin.toString());
         } catch (IOException e) {
             System.out.println("Written Error Occurs when outputting.");
         }
 
 
-        System.out.println(transfer.longBin2Hex(transfer.longHex2Bin("ABABABABABABABABABAB")).toUpperCase());
-        System.out.println(transfer.longHex2Bin(transfer.longBin2Hex("10101011101010111010101110101011101010111010101110101011101010111010101110101011")));
+//        System.out.println(transfer.longBin2Hex(transfer.longHex2Bin("ABABABABABABABABABAB")).toUpperCase());
+//        System.out.println(transfer.longHex2Bin(transfer.longBin2Hex("10101011101010111010101110101011101010111010101110101011101010111010101110101011")));
 
     }
 }

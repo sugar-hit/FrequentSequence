@@ -49,9 +49,9 @@ public class FileOperation {
             return "";
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            String str = null;
-            String keyFromFile = null;
-            int cutter = 0;
+            String str;
+            String keyFromFile;
+            int cutter;
 
                 while (null != (str = bufferedReader.readLine())) {
                     cutter = str.indexOf("=");
@@ -96,7 +96,7 @@ public class FileOperation {
         }
     }
 
-    public void outputFileAppendHex (String context) throws IOException {
+    public void outputFileAppend (String context) throws IOException {
         String path = configFileReader("output_filepath");
         if (path == null)
             return;
@@ -108,11 +108,23 @@ public class FileOperation {
         writer.close();
     }
 
-    public void outputFileAppendHexBin (String context) throws IOException {
-        String path = configFileReader("output_filepath");
-        if (path == null)
+    public void outputFileAppendHex (String context) throws IOException {
+        String path = configFileReader("output_filepath") + ".hex";
+        if (path.equals(".hex"))
             return;
-        File file = new File(path + ".bin");
+        File file = new File(path);
+        if (!file.exists())
+            file.createNewFile();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.append(context);
+        writer.close();
+    }
+
+    public void outputFileAppendHexBin (String context) throws IOException {
+        String path = configFileReader("output_filepath") + ".bin";
+        if (path.equals(".bin"))
+            return;
+        File file = new File(path);
         if (!file.exists())
             file.createNewFile();
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
