@@ -23,16 +23,22 @@ public class Main {
         // 获取反例文件所设计的全部反例操作码 -- 停用词（队列）
         ArrayList<String> negativeCtlArray = new ArrayList<>();
         data.Process dataProcess = new data.Process();
-        dataProcess.negativeCtlArray(negativeFiles, negativeCtlArray);
+//        dataProcess.negativeCtlArray(negativeFiles, negativeCtlArray);
 
         // 统计整理文件中的高频词，保存为HashMap
         HashMap<String, Long> hotDict = new HashMap<>();
         dataProcess.positiveCtlMap(positiveFiles, hotDict);
 
         // 在高频词中 过滤停用词
-        for (String bannedOps: negativeCtlArray) {
-            hotDict.put(bannedOps, 0L);
+//        for (String bannedOps: negativeCtlArray) {
+//            hotDict.put(bannedOps, 0L);
+//        }
+        try {
+            dataProcess.removeStopOpreation(negativeFiles, hotDict);
+        } catch (IOException e) {
+            System.out.println("Something wrong occurs, due complexity much intersected negative operations removed in hot keys.");
         }
+
 
         Sort sort = new Sort();
 
@@ -47,14 +53,14 @@ public class Main {
 //        StringBuffer bufferHex = new StringBuffer();
 //        StringBuffer bufferHexBin = new StringBuffer();
         for (int i = 0; i < length; i++) {
-//            buffer.append(transfer.outputHex(ops.get(i).toUpperCase()))
-//                    .append("/")
-//                    .append(opsCount.get(i))
-//                    .append('\n');
-            buffer.append(ops.get(i).toUpperCase())
+            buffer.append(transfer.outputHex(ops.get(i).toUpperCase()))
                     .append("/")
                     .append(opsCount.get(i))
                     .append('\n');
+//            buffer.append(ops.get(i).toUpperCase())
+//                    .append("/")
+//                    .append(opsCount.get(i))
+//                    .append('\n');
 ////            bufferHex.append(transfer.bin2hex(ops.get(i)).toUpperCase())
 //                    .append("/")
 //                    .append(opsCount.get(i))
@@ -71,7 +77,9 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Written Error Occurs when outputting.");
         }
-
+//        for (String s : ops) {
+//            System.out.format("%s", s);
+//        }
 
 //        System.out.println(transfer.longBin2Hex(transfer.longHex2Bin("ABABABABABABABABABAB")).toUpperCase());
 //        System.out.println(transfer.longHex2Bin(transfer.longBin2Hex("10101011101010111010101110101011101010111010101110101011101010111010101110101011")));

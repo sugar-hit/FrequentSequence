@@ -17,6 +17,9 @@ public class Process {
      * @param opList 用于保存反例操作集（数据返回值，ArrayList<String>类型）
      */
     public void negativeCtlArray (ArrayList<String> opFilePathList, ArrayList<String> opList) {
+        System.out.println("正在加载反例文件。" +
+                "\n" +
+                "如果反例文件较多且文件较大将花费较长时间，请耐心等待。");
         if (opFilePathList == null)
             return;
         if (opFilePathList.isEmpty())
@@ -34,19 +37,42 @@ public class Process {
     }
 
     private void negativeCtlArraySingleFile (String opFilePathStr, ArrayList<String> opList) throws IOException {
+//        System.out.println("--------------------------------------------------------------------");
+//        System.out.println(opFilePathStr);
+//        System.out.println("--------------------------------------------------------------------");
         if (opFilePathStr == null)
             return ;
         if (opList == null)
             opList = new ArrayList<>();
         Transfer transfer = new Transfer();
+
         File file = new File(opFilePathStr);
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String str = null;
-        while (null != (str = reader.readLine())) {
-//            removeRepeatedOperationList(transfer.longHex2Bin(str), opList);
-            removeRepeatedOperationList(str, opList);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        StringWriter stringWriter = new StringWriter();
+        int len = 1;
+        byte[] temp = new byte[len];
+        for (; (fileInputStream.read(temp, 0 , len)) != -1; ) {
+            if (temp[0] > 0xf && temp[0] <= 0xff) {
+                stringWriter.write(Integer.toHexString(temp[0]));
+            } else if (temp[0] >= 0x0 && temp[0] <= 0xf) {//对于只有1位的16进制数前边补“0”
+                stringWriter.write("0" + Integer.toHexString(temp[0]));
+            } else { //对于int<0的位转化为16进制的特殊处理，因为Java没有Unsigned int，所以这个int可能为负数
+                stringWriter.write(Integer.toHexString(temp[0]).substring(6));
+            }
         }
-        reader.close();
+//        System.out.println(stringWriter.toString());
+        removeRepeatedOperationList(stringWriter.toString(), opList);
+//
+//
+//
+//        BufferedReader reader = new BufferedReader(new FileReader(file));
+//        String str = null;
+//
+//        while (null != (str = reader.readLine())) {
+////            removeRepeatedOperationList(transfer.longHex2Bin(str), opList);
+//            removeRepeatedOperationList(str, opList);
+//        }
+//        reader.close();
     }
 
     private void removeRepeatedOperationList(String op, ArrayList<String> opList) {
@@ -74,6 +100,9 @@ public class Process {
     }
 
     public void positiveCtlMap (ArrayList<String> opFilePathList, HashMap<String, Long> opListMap) {
+        System.out.println("正在读取正例文件..." +
+                "\n" +
+                "如果正例文件较多且文件较大将花费较长时间，请耐心等待。");
         if (opFilePathList == null)
             return;
         if (opFilePathList.isEmpty())
@@ -88,7 +117,7 @@ public class Process {
                         "For system running safety, we ignore this exception.");
             }
         }
-
+        System.out.println("正例文件分析完成。\n");
     }
 
     private void positiveCtlMapSingleFile (String opFilePathStr, HashMap<String, Long> opListMap) throws IOException{
@@ -99,14 +128,29 @@ public class Process {
         if (opListMap == null)
             opListMap = new HashMap<>();
         File file = new File(opFilePathStr);
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        Transfer transfer = new Transfer();
-        String str = null;
-        while (null != (str = reader.readLine())) {
-//            generatePositiveCtlMap(str, opListMap);
-            generatePositiveCtlMap(remove0x(removeSpace(str)), opListMap);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        StringWriter stringWriter = new StringWriter();
+        int len = 1;
+        byte[] temp = new byte[len];
+        for (; (fileInputStream.read(temp, 0 , len)) != -1; ) {
+            if (temp[0] > 0xf && temp[0] <= 0xff) {
+                stringWriter.write(Integer.toHexString(temp[0]));
+            } else if (temp[0] >= 0x0 && temp[0] <= 0xf) {//对于只有1位的16进制数前边补“0”
+                stringWriter.write("0" + Integer.toHexString(temp[0]));
+            } else { //对于int<0的位转化为16进制的特殊处理，因为Java没有Unsigned int，所以这个int可能为负数
+                stringWriter.write(Integer.toHexString(temp[0]).substring(6));
+            }
         }
-        reader.close();
+//        BufferedReader reader = new BufferedReader(new FileReader(file));
+        Transfer transfer = new Transfer();
+        generatePositiveCtlMap(stringWriter.toString(), opListMap);
+
+//        String str = null;
+//        while (null != (str = reader.readLine())) {
+////            generatePositiveCtlMap(str, opListMap);
+//            generatePositiveCtlMap(remove0x(removeSpace(str)), opListMap);
+//        }
+//        reader.close();
     }
 
     private void generatePositiveCtlMap (String op, HashMap<String, Long> opListMap) {
@@ -153,5 +197,57 @@ public class Process {
 
     private String removeSpace (String str) {
         return StringUtils.deleteAny(str, " ");
+    }
+
+    public void removeStopOpreation (ArrayList<String> stopOpFiles, HashMap<String, Long> opListMap) throws IOException{
+        System.out.println("正在读取反例文件...");
+        System.out.println("如果反例文件较多且文件较大将花费较长时间，请耐心等待。");
+        if (stopOpFiles == null)
+            return;
+        if (stopOpFiles.size() == 0)
+            return;
+        if (opListMap == null)
+            return;
+        if (opListMap.size() == 0)
+            return;
+        /**
+         *  为了提升等待时候的用户体验，
+         *  在这里加入Console端进度条，可以在IDE控制台，
+         */
+        int fileNumber = stopOpFiles.size();
+        int fileCounter = 0;
+        double jobPercent = 0.0;
+        int backspace = 0;
+        System.out.print("正在分析反例文件操作序列：");
+        for (String s : stopOpFiles) {
+            fileCounter++;
+            jobPercent = (double)fileCounter * 100.0 / (double)fileNumber;
+            for (int i = 0; i < backspace ; i++) {
+                System.out.print("\b");
+            }
+            System.out.format("%.2f", jobPercent);
+            System.out.print("%");
+            backspace = ("" + (int)(jobPercent / 1)).length() + 4;
+            FileInputStream fileInputStream = new FileInputStream(new File(s));
+            StringWriter stringWriter = new StringWriter();
+            int len = 1;
+            byte[] temp = new byte[len];
+            for (; (fileInputStream.read(temp, 0 , len)) != -1; ) {
+                if (temp[0] > 0xf && temp[0] <= 0xff) {
+                    stringWriter.write(Integer.toHexString(temp[0]));
+                } else if (temp[0] >= 0x0 && temp[0] <= 0xf) {//对于只有1位的16进制数前边补“0”
+                    stringWriter.write("0" + Integer.toHexString(temp[0]));
+                } else { //对于int<0的位转化为16进制的特殊处理，因为Java没有Unsigned int，所以这个int可能为负数
+                    stringWriter.write(Integer.toHexString(temp[0]).substring(6));
+                }
+            }
+            String str = stringWriter.toString();
+            for (String k :opListMap.keySet()) {
+                if (str.contains(k))
+                    opListMap.put(k, 0L);
+            }
+        }
+        System.out.print("\n");
+        System.out.print("反例文件分析完成。");
     }
 }

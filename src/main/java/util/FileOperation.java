@@ -52,18 +52,17 @@ public class FileOperation {
             String str;
             String keyFromFile;
             int cutter;
-
-                while (null != (str = bufferedReader.readLine())) {
-                    cutter = str.indexOf("=");
-                    if (cutter <= 0)
-                        continue;
-                    keyFromFile = str.substring(0, cutter);
-                    if (keyFromFile.equals(key)) {
-                        bufferedReader.close();
-                        return str.substring(cutter + 1);
-                    }
+            while (null != (str = bufferedReader.readLine())) {
+                cutter = str.indexOf("=");
+                if (cutter <= 0)
+                    continue;
+                keyFromFile = str.substring(0, cutter);
+                if (keyFromFile.equals(key)) {
+                    bufferedReader.close();
+                    return str.substring(cutter + 1);
                 }
-                bufferedReader.close();
+            }
+            bufferedReader.close();
         } catch (Exception e) {
             System.out.println("Error occurs when config file reading. " +
                     "Please check up settings file all right.");
@@ -97,6 +96,7 @@ public class FileOperation {
     }
 
     public void outputFileAppend (String context) throws IOException {
+        System.out.println("统计已完成，正在输出结果文件");
         String path = configFileReader("output_filepath");
         if (path == null)
             return;
