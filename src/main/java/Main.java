@@ -58,7 +58,7 @@ public class Main {
         System.out.println("----------------------------------------------------");
         // 在高频词中 过滤停用词
         System.out.println("正在读取反例文件...\n如果反例文件较多且文件较大将花费较长时间，请耐心等待");
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 10; i++) {
             System.out.print("\b");
         }
         try {
@@ -83,6 +83,7 @@ public class Main {
                     .append('\n');
             i++;
         }
+        buffer.deleteCharAt(buffer.length() - 1);
         // 结果输出到文件
 //        Transfer transfer = new Transfer();
 //        StringBuffer buffer = new StringBuffer();
