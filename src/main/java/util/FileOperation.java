@@ -96,7 +96,6 @@ public class FileOperation {
     }
 
     public void outputFileAppend (String context) throws IOException {
-        System.out.println("统计已完成，正在输出结果文件");
         String path = configFileReader("output_filepath");
         if (path == null)
             return;

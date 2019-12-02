@@ -317,5 +317,9 @@ public class Process {
             opsMap2.put(opArray.get(i), opCountsArray.get(i));
         }
         opsMap = opsMap2;
+        for (int i = 0; i < 42; i++) {
+            System.out.print("\b");
+        }
+        System.out.println("反例文件分析完成");
     }
 }

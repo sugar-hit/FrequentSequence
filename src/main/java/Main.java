@@ -25,10 +25,10 @@ public class Main {
 //        dataProcess.negativeCtlArray(negativeFiles, negativeCtlArray);
 
         // 统计整理文件中的高频词，保存为HashMap
-        System.out.print("正在读取正例文件...\n如果正例文件较多且文件较大将花费较长时间，请耐心等待");
+        System.out.print("正在读取正例文件...（如果正例文件较多且文件较大将花费较长时间，请耐心等待）");
         HashMap<String, Integer> hotDict = new HashMap<>();
         dataProcess.positiveCtlMap(positiveFiles, hotDict);
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 39; i++) {
             System.out.print("\b");
         }
         System.out.println("正例文件读取完成");
@@ -44,30 +44,26 @@ public class Main {
 //        }
 
         // 分析高频操作序列，排序。
-        System.out.print("正在分析正例文件...\n如果正例文件较多且文件较大将花费较长时间，请耐心等待");
+        System.out.print("正在分析正例文件...（如果正例文件较多且文件较大将花费较长时间，请耐心等待）");
         Sort sort = new Sort();
         // 排序（O(n^2) ^^ = 100）
 //        ArrayList<String> ops = new ArrayList<>();
 //        ArrayList<Integer> opsCount = new ArrayList<>();
 //        int length = sort.top(hotDict.size(), hotDict, ops, opsCount);
         LinkedHashMap<String, Integer> hotDictSorted = sort.sort(hotDict);
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 39; i++) {
             System.out.print("\b");
         }
         System.out.println("正例文件分析完成");
         System.out.println("----------------------------------------------------");
         // 在高频词中 过滤停用词
-        System.out.println("正在读取反例文件...\n如果反例文件较多且文件较大将花费较长时间，请耐心等待");
-        for (int i = 0; i < 10; i++) {
-            System.out.print("\b");
-        }
+        System.out.print("正在读取反例文件...（如果反例文件较多且文件较大将花费较长时间，请耐心等待）");
         try {
             dataProcess.fastRemoveStopOpreation(negativeFiles, hotDictSorted);
         } catch (IOException e) {
             System.out.println("Something wrong occurs, due complexity much intersected negative operations removed in hot keys.");
         }
         System.out.print("\n");
-        System.out.println("反例文件分析完成");
         System.out.println("----------------------------------------------------");
         // 结果输出至文件
         System.out.print("正在向文件输出...");
