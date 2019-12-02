@@ -1,8 +1,12 @@
 package data;
 
+import org.springframework.util.StringUtils;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Process {
 
@@ -39,7 +43,8 @@ public class Process {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String str = null;
         while (null != (str = reader.readLine())) {
-            removeRepeatedOperationList(transfer.longHex2Bin(str), opList);
+//            removeRepeatedOperationList(transfer.longHex2Bin(str), opList);
+            removeRepeatedOperationList(str, opList);
         }
         reader.close();
     }
@@ -98,7 +103,8 @@ public class Process {
         Transfer transfer = new Transfer();
         String str = null;
         while (null != (str = reader.readLine())) {
-            generatePositiveCtlMap(transfer.longHex2Bin(str), opListMap);
+//            generatePositiveCtlMap(str, opListMap);
+            generatePositiveCtlMap(remove0x(removeSpace(str)), opListMap);
         }
         reader.close();
     }
@@ -111,6 +117,8 @@ public class Process {
             return;
         if (opListMap == null)
             opListMap = new HashMap<>();
+        List<String> opSingleFile = new ArrayList<>();
+        Map<String, Long> opSingleFileMap = new HashMap<>();
         byte[] stringArr = op.getBytes();
         StringBuffer tmp = new StringBuffer();
         for (int i = 5; i < 21; i++ ) {
@@ -120,15 +128,30 @@ public class Process {
                 tmp.setLength(0);
                 for (int count = 0 ; count < i ; count++) {
                     tmp.append((char) stringArr[j + count]);
+//                    opSingleFile.(tmp.toString());
+                    if (opSingleFileMap.get(tmp.toString()) == null)
+                        opSingleFileMap.put(tmp.toString(), 1L);
+                    else
+                        opSingleFileMap.put(tmp.toString(), opSingleFileMap.get(tmp.toString()) + 1);
                 }
 //                if (!opList.contains(tmp.toString()))
 //                    opList.add(tmp.toString());
-                if (opListMap.containsKey(tmp.toString()))
-                    opListMap.replace(tmp.toString(), opListMap.get(tmp.toString()) + 1);
+                if (opListMap.containsKey(tmp.toString())) {
+                    if (opSingleFileMap.get(tmp.toString()) == null || opSingleFileMap.get(tmp.toString()) == 1)
+                        opListMap.replace(tmp.toString(), opListMap.get(tmp.toString()) + 1);
+                }
+
                 else
                     opListMap.put(tmp.toString(), 1L);
             }
-
         }
+    }
+
+    private String remove0x (String str) {
+        return StringUtils.deleteAny(StringUtils.deleteAny(str, "\\X"), "\\x");
+    }
+
+    private String removeSpace (String str) {
+        return StringUtils.deleteAny(str, " ");
     }
 }
